@@ -37,7 +37,8 @@ import java.nio.charset.Charset
 
 class MainActivity : ComponentActivity() {
     val client = OkHttpClient()
-    var apiToken = MutableLiveData("b4ee3f4f-417c-4d0a-a0af-8166d72ae1a1")
+//    var apiToken = MutableLiveData("b4ee3f4f-417c-4d0a-a0af-8166d72ae1a1")
+    var apiToken = MutableLiveData("")
     var serialNumber = MutableLiveData("")
     var selectedEventId = MutableLiveData(0)
     var selectedOfficeId = MutableLiveData(0)
