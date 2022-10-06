@@ -121,7 +121,7 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.N)
     @Composable
     fun AppNavHost(navController: NavHostController = rememberNavController()){
-        val startDestination = "/events"
+        val startDestination = "/login"
         NavHost(navController = navController, startDestination = startDestination){
             composable("/login"){
                 LoginScreen(
