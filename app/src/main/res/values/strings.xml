@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Presensi</string>
-    <string name="base_url">http://192.168.100.31:3000</string>
-<!--    <string name="base_url">http://10.107.143.238:3000</string>-->
+    <string name="base_url">http://103.82.242.44:3082</string>
+<!--    <string name="base_url">http://192.168.100.31:3000</string>-->
 </resources>
