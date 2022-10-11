@@ -1,6 +1,7 @@
 package or.id.mta.presensi.login.view
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
@@ -61,7 +62,7 @@ fun LoginScreen(client: OkHttpClient = OkHttpClient(), onLoggedIn: (String) -> U
                 text = "Presensi",
                 fontSize = 100.sp,
                 fontFamily = FontFamily.Cursive,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Center
             )
         }
         Box(modifier = Modifier.weight(1F))
