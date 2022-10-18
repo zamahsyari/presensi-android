@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -74,7 +75,9 @@ fun AddEventScreen(
     val startTime = viewModel.selectedStartTime.observeAsState("09:00")
     val endTime = viewModel.selectedEndTime.observeAsState("12:00")
 
-    viewModel.fetchPerwakilan()
+    LaunchedEffect(Unit){
+        viewModel.fetchPerwakilan()
+    }
 
     Column(
         modifier = Modifier
@@ -107,9 +110,11 @@ fun AddEventScreen(
             items = listMajisToString(dataPerwakilan.value),
             onChange = {index ->
                 val code = getMajlisCodeByIndex(index, dataPerwakilan.value)
+                val majlis = getMajlisByIndex(index, dataPerwakilan.value)
                 val id = getMajlisIdByIndex(index, dataPerwakilan.value)
                 viewModel.setSelectedPerwakilanCode(code)
                 viewModel.setSelectedPerwakilan(id)
+                viewModel.setPerwakilanEntity(majlis)
                 viewModel.fetchCabang()
             }
         )
@@ -206,6 +211,11 @@ fun getMajlisCodeByIndex(index:Int, dataMajlis: List<MajlisEntity>): String{
 fun getMajlisIdByIndex(index:Int, dataMajlis: List<MajlisEntity>): Int{
     val majlis = dataMajlis.get(index)
     return majlis.id
+}
+
+fun getMajlisByIndex(index:Int, dataMajlis: List<MajlisEntity>): MajlisEntity{
+    val majlis = dataMajlis.get(index)
+    return majlis
 }
 
 fun formatDecimalToString(value:Int): String {

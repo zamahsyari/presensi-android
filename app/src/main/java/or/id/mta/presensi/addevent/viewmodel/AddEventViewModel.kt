@@ -19,6 +19,9 @@ class AddEventViewModel(token: LiveData<String>, addEventService: AddEventServic
     val hour = calendar.get(Calendar.HOUR)
     val minute = calendar.get(Calendar.MINUTE)
 
+    private var _perwakilanEntity = MutableLiveData<MajlisEntity>()
+    val perwakilanEntity: LiveData<MajlisEntity> = _perwakilanEntity
+
     private var _errorMessage = MutableLiveData("")
     val errorMessage: LiveData<String> = _errorMessage
 
@@ -77,6 +80,12 @@ class AddEventViewModel(token: LiveData<String>, addEventService: AddEventServic
         _selectedPerwakilan.value = id
     }
 
+    fun setPerwakilanEntity(majlisEntity: MajlisEntity){
+        var majlis = majlisEntity
+        majlis.name = "${majlis.name} (Perwakilan)"
+        _perwakilanEntity.postValue(majlisEntity)
+    }
+
     fun setSelectedCabang(id:Int){
         _selectedCabang.value = id
     }
@@ -117,6 +126,8 @@ class AddEventViewModel(token: LiveData<String>, addEventService: AddEventServic
                 _perwakilanEntities.postValue(majlisEntities)
                 _selectedPerwakilanCode.postValue(majlisEntities.get(0).code)
                 _selectedPerwakilan.postValue(majlisEntities.get(0).id)
+                setPerwakilanEntity(majlisEntities.get(0))
+                fetchCabang()
             },
             onError = {message ->
                 _errorMessage.postValue(message)
@@ -130,8 +141,16 @@ class AddEventViewModel(token: LiveData<String>, addEventService: AddEventServic
             perwakilanCode = selectedPerwakilanCode.value!!,
             filterName = query.value,
             onSuccess = {majlisEntities ->
-                _cabangEntities.postValue(majlisEntities)
-                _selectedCabang.postValue(majlisEntities.get(0).id)
+                var cabangs = mutableListOf<MajlisEntity>()
+                cabangs.add(perwakilanEntity.value!!)
+                cabangs.addAll(majlisEntities)
+
+                _cabangEntities.postValue(cabangs)
+                if(majlisEntities.size > 0){
+                    _selectedCabang.postValue(majlisEntities.get(0).id)
+                }else{
+                    _selectedCabang.postValue(selectedPerwakilan.value)
+                }
             },
             onError = {message ->
                 _errorMessage.postValue(message)

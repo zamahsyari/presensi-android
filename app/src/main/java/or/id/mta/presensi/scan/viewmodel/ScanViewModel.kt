@@ -171,13 +171,15 @@ class ScanViewModel(
     }
 
     fun initEvent(){
-        val majlisPresence = MajlisPresence(
-            name = event.value!!.name,
-            cabang = event.value!!.cabang,
-            maleCount = 0,
-            femaleCount = 0
-        )
-        _majlisPresence.postValue(majlisPresence)
+        if(event.value != null){
+            val majlisPresence = MajlisPresence(
+                name = event.value!!.name,
+                cabang = event.value!!.cabang,
+                maleCount = 0,
+                femaleCount = 0
+            )
+            _majlisPresence.postValue(majlisPresence)
+        }
     }
 
     fun updateStatistic(eventId:Int){
