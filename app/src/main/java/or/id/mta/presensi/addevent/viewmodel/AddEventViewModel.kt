@@ -1,5 +1,6 @@
 package or.id.mta.presensi.addevent.viewmodel
 
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -124,10 +125,12 @@ class AddEventViewModel(token: LiveData<String>, addEventService: AddEventServic
             filterName = query.value,
             onSuccess = {majlisEntities ->
                 _perwakilanEntities.postValue(majlisEntities)
-                _selectedPerwakilanCode.postValue(majlisEntities.get(0).code)
-                _selectedPerwakilan.postValue(majlisEntities.get(0).id)
-                setPerwakilanEntity(majlisEntities.get(0))
-                fetchCabang()
+                if(majlisEntities.size > 0) {
+                    _selectedPerwakilanCode.postValue(majlisEntities.get(0).code)
+                    _selectedPerwakilan.postValue(majlisEntities.get(0).id)
+                    setPerwakilanEntity(majlisEntities.get(0))
+                    fetchCabang()
+                }
             },
             onError = {message ->
                 _errorMessage.postValue(message)

@@ -1,11 +1,14 @@
 package or.id.mta.presensi.scan.viewmodel
 
+import android.content.Context
+import android.media.MediaPlayer
 import android.os.Handler
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.delay
+import or.id.mta.presensi.R
 import or.id.mta.presensi.common.StatisticExtension
 import or.id.mta.presensi.event.entity.EventEntity
 import or.id.mta.presensi.login.service.ScanService
@@ -18,6 +21,7 @@ import java.util.*
 import kotlin.concurrent.schedule
 
 class ScanViewModel(
+    val context: Context,
     val token: LiveData<String>,
     val serialNumber: LiveData<String>,
     val memberId: LiveData<Int>,
@@ -126,6 +130,8 @@ class ScanViewModel(
             memberId = memberId.value!!,
             onSuccess = {userPresence ->
                 Log.d("USER PRESENCE", userPresence.toString())
+                val mediaPlayer = MediaPlayer.create(context, R.raw.silakan_masuk)
+                mediaPlayer.start()
                 _isLoading.postValue(false)
                 _isUserFound.postValue(true)
                 _userPresence.postValue(userPresence)
@@ -137,6 +143,8 @@ class ScanViewModel(
                 }
             },
             onError = {errorMessage ->
+                val mediaPlayer = MediaPlayer.create(context, R.raw.anda_belum_terdaftar)
+                mediaPlayer.start()
                 _errorMessage.postValue(errorMessage)
                 _isLoading.postValue(false)
                 _isUserNotFound.postValue(true)

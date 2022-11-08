@@ -1,6 +1,7 @@
 package or.id.mta.presensi.scan.view
 
-import android.util.Log
+import android.content.Context
+import android.media.MediaPlayer
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi
 import androidx.compose.animation.graphics.res.animatedVectorResource
@@ -12,6 +13,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -30,7 +32,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.delay
 import or.id.mta.presensi.R
 import or.id.mta.presensi.common.ButtonForm
 import or.id.mta.presensi.common.DropdownForm
@@ -132,7 +133,8 @@ fun ScanControl(onStatsClick: () -> Unit, enabled:Boolean = false, onChange: (Bo
         modifier = Modifier.padding(bottom = 16.dp)
     ){
         Box(
-            modifier = Modifier.height(64.dp)
+            modifier = Modifier
+                .height(64.dp)
                 .clickable {
                     isEnabled.value = !isEnabled.value
                     onChange(isEnabled.value)
@@ -148,7 +150,9 @@ fun ScanControl(onStatsClick: () -> Unit, enabled:Boolean = false, onChange: (Bo
         }
         Box(modifier = Modifier.weight(weight = 1F))
         Box(
-            modifier = Modifier.height(64.dp).clickable { onStatsClick() },
+            modifier = Modifier
+                .height(64.dp)
+                .clickable { onStatsClick() },
             contentAlignment = Alignment.Center,
         ){
             Image(imageVector = ImageVector.vectorResource(id = R.drawable.ic_statistic), contentDescription = "statistic")
@@ -455,4 +459,17 @@ fun ScanTextForm(label: String, placeholder: String, onChange: (String) -> Unit)
             onChange(it)
         }
     )
+}
+
+@Composable
+fun MyMediaPlayer(context: Context){
+    val mediaPlayer = MediaPlayer.create(context, R.raw.silakan_masuk)
+    Row{
+        Button(onClick = {mediaPlayer.start()}) {
+            Text("play")
+        }
+        Button(onClick = {mediaPlayer.stop()}) {
+            Text("stop")
+        }
+    }
 }

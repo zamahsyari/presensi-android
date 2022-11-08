@@ -48,6 +48,7 @@ fun ScanScreen(
     onScan: (String) -> Unit,
     onAfterScan: () -> Unit
 ) {
+    val context = LocalContext.current
     val repository: ScanApi = DefaultScanApi(
         context = LocalContext.current,
         client = client
@@ -61,7 +62,7 @@ fun ScanScreen(
         wargaRepository = wargaRepository
     )
     val viewModel: ScanViewModel = viewModel(
-        factory = ScanViewModelFactory(token, serialNumber, memberId, event!!, service)
+        factory = ScanViewModelFactory(context, token, serialNumber, memberId, event!!, service)
     )
     val presenceStatuses = mutableListOf<PresenceStatus>()
     presenceStatuses.add(PresenceStatus(id = 1, status="hadir".uppercase(), isActive = true))
@@ -138,6 +139,7 @@ fun ScanScreen(
                     enabled = isEnabled.value,
                     onChange = {viewModel.setEnabled(it)})
             }
+            MyMediaPlayer(context = context)
         }
     }
     LoadingPopup(
