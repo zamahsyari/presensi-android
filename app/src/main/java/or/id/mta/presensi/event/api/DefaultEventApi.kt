@@ -11,7 +11,7 @@ import java.io.IOException
 
 class DefaultEventApi(context:Context, client: OkHttpClient): EventApi {
     val client = client
-    val url = context.getString(R.string.base_url) + "/events"
+    val url = context.getString(R.string.base_url) + "/events?1=1"
 
     override fun getAll(
         token: String,
@@ -21,7 +21,10 @@ class DefaultEventApi(context:Context, client: OkHttpClient): EventApi {
     ) {
         var finalUrl = url
         if(filter.name != null && filter.name != ""){
-            finalUrl += "?filter[]=name:${filter.name}"
+            finalUrl += "&filter[]=name:${filter.name}"
+        }
+        if(filter.officeId != null && filter.officeId != 0){
+            finalUrl += "&filter[]=office_id:${filter.officeId}"
         }
         val request = Request.Builder()
             .url(finalUrl)

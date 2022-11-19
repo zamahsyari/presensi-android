@@ -26,6 +26,7 @@ import or.id.mta.presensi.login.service.EventService
 fun EventScreen(
     client: OkHttpClient = OkHttpClient(),
     token: LiveData<String> = MutableLiveData(""),
+    officeId: LiveData<Int> = MutableLiveData(0),
     onSelect: (Int) -> Unit = {},
     onSelectEvent: (EventEntity) -> Unit = {},
     onAddEventClick: () -> Unit = {}
@@ -42,7 +43,7 @@ fun EventScreen(
     var query = remember{ mutableStateOf("") }
 
     LaunchedEffect(Unit){
-        viewModel.fetchData()
+        viewModel.fetchData(officeId = officeId)
     }
 
     Column(
@@ -53,7 +54,7 @@ fun EventScreen(
         Box(modifier = Modifier.height(24.dp))
         SearchForm(value = query.value, placeholder = "Cari nama acara...") {
             query.value = it
-            viewModel.setQueryAndSearch(it)
+            viewModel.setQueryAndSearch(officeId = officeId, it)
         }
         Box(modifier = Modifier.height(24.dp))
         GenerateItems(eventEntities = data.value,

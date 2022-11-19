@@ -52,7 +52,7 @@ class DefaultMajlisApi(context:Context, client: OkHttpClient): MajlisApi {
         onSuccess: (response: MajlisApiResponse) -> Unit,
         onError: (message: String) -> Unit
     ) {
-        var finalUrl = "$url/cabang?perwakilan=$perwakilanCode"
+        var finalUrl = "$url/cabang?per_page=200&perwakilan=$perwakilanCode"
         if(filter.name != null && filter.name != ""){
             finalUrl += "&filter[]=office_name:${filter.name}"
         }

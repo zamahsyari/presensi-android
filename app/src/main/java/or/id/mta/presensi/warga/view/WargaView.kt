@@ -36,6 +36,7 @@ fun WargaScreen(
     client: OkHttpClient = OkHttpClient(),
     token: LiveData<String> = MutableLiveData(""),
     event: LiveData<EventEntity> = MutableLiveData(),
+    officeId: LiveData<Int> = MutableLiveData(0),
     onSelect: (Int) -> Unit = {},
     onBackClick: () -> Unit = {}
 ){
@@ -45,7 +46,8 @@ fun WargaScreen(
     )
     val service: WargaService = DefaultWargaService(repository)
     val viewModel: WargaViewModel = viewModel(
-        factory = WargaViewModelFactory(token = token, wargaService = service, event = event)
+        factory = WargaViewModelFactory(
+            token = token, officeId = officeId, wargaService = service, event = event)
     )
     val coroutineScope = rememberCoroutineScope()
     val data = viewModel.eventEntities.observeAsState(emptyList())

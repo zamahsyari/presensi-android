@@ -6,6 +6,7 @@ interface EventService {
     fun getEvents(
         token: String,
         filterName: String?,
+        filterOfficeId: Int?,
         onSuccess: (eventEntities: List<EventEntity>) -> Unit,
         onError: (message: String) -> Unit
     )

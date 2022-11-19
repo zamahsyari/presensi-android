@@ -17,10 +17,11 @@ class EventViewModel(val token: LiveData<String>, val eventService: EventService
     private var _eventEntities = MutableLiveData(emptyList<EventEntity>())
     val eventEntities: LiveData<List<EventEntity>> = _eventEntities
 
-    fun fetchData(){
+    fun fetchData(officeId: LiveData<Int>){
         eventService.getEvents(
             token = token.value!!,
             filterName = query.value,
+            filterOfficeId = officeId.value,
             onSuccess = {eventEntities ->
                 _eventEntities.postValue(eventEntities)
             },
@@ -30,8 +31,8 @@ class EventViewModel(val token: LiveData<String>, val eventService: EventService
         )
     }
 
-    fun setQueryAndSearch(query:String){
+    fun setQueryAndSearch(officeId: LiveData<Int>, query:String){
         _query.value = query
-        fetchData()
+        fetchData(officeId)
     }
 }

@@ -11,8 +11,14 @@ class DefaultEventService(repository: EventApi):EventService {
     val repo:EventApi = repository
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun getEvents(token:String, filterName:String?, onSuccess: (eventEntities: List<EventEntity>) -> Unit, onError: (message: String) -> Unit) {
-        val filterApi = EventApiFilter(filterName)
+    override fun getEvents(
+        token:String,
+        filterName:String?,
+        filterOfficeId:Int?,
+        onSuccess: (eventEntities: List<EventEntity>) -> Unit,
+        onError: (message: String) -> Unit)
+    {
+        val filterApi = EventApiFilter(filterName, filterOfficeId)
         repo.getAll(
             token,
             filterApi,

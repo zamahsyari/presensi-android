@@ -34,7 +34,7 @@ import or.id.mta.presensi.ui.theme.PrimaryGreen
 import or.id.mta.presensi.ui.theme.PrimaryRed
 
 @Composable
-fun LoginScreen(client: OkHttpClient = OkHttpClient(), onLoggedIn: (String) -> Unit){
+fun LoginScreen(client: OkHttpClient = OkHttpClient(), onLoggedIn: (String, Int) -> Unit){
     val repository: LoginApi = DefaultLoginApi(
         context = LocalContext.current,
         client = client
@@ -113,8 +113,8 @@ fun LoginScreen(client: OkHttpClient = OkHttpClient(), onLoggedIn: (String) -> U
         )
         Box(modifier = Modifier.height(32.dp))
         ButtonForm(label = "submit", action = {
-            viewModel.submit(username.value, password.value, onSuccess = {token -> coroutineScope.launch(Dispatchers.Main) {
-                onLoggedIn(token)
+            viewModel.submit(username.value, password.value, onSuccess = {token, officeId -> coroutineScope.launch(Dispatchers.Main) {
+                onLoggedIn(token, officeId)
             }})
         })
     }
@@ -123,5 +123,5 @@ fun LoginScreen(client: OkHttpClient = OkHttpClient(), onLoggedIn: (String) -> U
 @Preview(showBackground = true)
 @Composable
 fun LoginPreview(){
-    LoginScreen(onLoggedIn = {})
+    LoginScreen(onLoggedIn = {token, officeId -> null})
 }

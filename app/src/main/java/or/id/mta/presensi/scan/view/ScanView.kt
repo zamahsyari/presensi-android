@@ -41,6 +41,7 @@ fun ScanScreen(
     serialNumber: LiveData<String> = MutableLiveData(""),
     memberId: LiveData<Int> = MutableLiveData(0),
     eventId: LiveData<Int> = MutableLiveData(1),
+    officeId: LiveData<Int> = MutableLiveData(0),
     event: LiveData<EventEntity>?,
     onBackClick: () -> Unit,
     onSearchClick: () -> Unit,
@@ -139,7 +140,7 @@ fun ScanScreen(
                     enabled = isEnabled.value,
                     onChange = {viewModel.setEnabled(it)})
             }
-            MyMediaPlayer(context = context)
+//            MyMediaPlayer(context = context)
         }
     }
     LoadingPopup(

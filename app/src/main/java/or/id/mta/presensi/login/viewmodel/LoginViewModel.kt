@@ -14,16 +14,14 @@ class LoginViewModel(loginService: LoginService): ViewModel() {
 
     val service = loginService
 
-    fun submit(username:String, password:String, onSuccess: (String) -> Unit){
+    fun submit(username:String, password:String, onSuccess: (String, Int) -> Unit){
         service.login(
             username,
             password,
-            {token ->
+            {token, officeId ->
                 _successMessage.postValue("Login berhasil")
                 _errorMessage.postValue("")
-                onSuccess(token)
-
-
+                onSuccess(token, officeId)
             },
             {errorMessage ->
                 _successMessage.postValue("")

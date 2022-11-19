@@ -10,14 +10,14 @@ class DefaultLoginService(repository: LoginApi):LoginService {
     override fun login(
         username:String,
         password:String,
-        onSuccess: (message: String) -> Unit,
+        onSuccess: (message: String, officeId: Int) -> Unit,
         onError: (message: String) -> Unit
     ){
         val loginRequest = LoginConverter.toLoginRequest(username, password)
         repo.login(
             loginRequest,
             {response ->
-                onSuccess(response.token)
+                onSuccess(response.token, response.office_id)
             },
             {errorMessage ->
                 onError(errorMessage)

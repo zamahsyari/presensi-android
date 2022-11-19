@@ -45,6 +45,7 @@ import java.util.*
 fun AddEventScreen(
     client: OkHttpClient = OkHttpClient(),
     token: LiveData<String> = MutableLiveData(""),
+    officeId: LiveData<Int> = MutableLiveData(0),
     onSuccess: () -> Unit,
     onBackClick: () -> Unit = {}
 ){
@@ -76,7 +77,12 @@ fun AddEventScreen(
     val endTime = viewModel.selectedEndTime.observeAsState("12:00")
 
     LaunchedEffect(Unit){
-        viewModel.fetchPerwakilan()
+        if(officeId.value!! == 0){
+            viewModel.fetchPerwakilan()
+        }else{
+            viewModel.setSelectedPerwakilan(officeId.value!!)
+            viewModel.setSelectedCabang(officeId.value!!);
+        }
     }
 
     Column(
@@ -103,32 +109,34 @@ fun AddEventScreen(
                 )
             }
         }
-        Box(modifier = Modifier.height(32.dp))
-        DropdownForm(
-            label = "pilih perwakilan".uppercase(),
-            placeholder = "--Pilih perwakilan--",
-            items = listMajisToString(dataPerwakilan.value),
-            onChange = {index ->
-                val code = getMajlisCodeByIndex(index, dataPerwakilan.value)
-                val majlis = getMajlisByIndex(index, dataPerwakilan.value)
-                val id = getMajlisIdByIndex(index, dataPerwakilan.value)
-                viewModel.setSelectedPerwakilanCode(code)
-                viewModel.setSelectedPerwakilan(id)
-                viewModel.setPerwakilanEntity(majlis)
-                viewModel.fetchCabang()
-            }
-        )
         Box(modifier = Modifier.height(16.dp))
-        DropdownForm(
-            label = "pilih cabang".uppercase(),
-            placeholder = "--Pilih cabang--",
-            items = listMajisToString(dataCabang.value),
-            onChange = {index ->
-                val id = getMajlisIdByIndex(index, dataCabang.value)
-                viewModel.setSelectedCabang(id)
-            }
-        )
-        Box(modifier = Modifier.height(16.dp))
+        if(officeId.value!! == 0){
+            DropdownForm(
+                label = "pilih perwakilan".uppercase(),
+                placeholder = "--Pilih perwakilan--",
+                items = listMajisToString(dataPerwakilan.value),
+                onChange = {index ->
+                    val code = getMajlisCodeByIndex(index, dataPerwakilan.value)
+                    val majlis = getMajlisByIndex(index, dataPerwakilan.value)
+                    val id = getMajlisIdByIndex(index, dataPerwakilan.value)
+                    viewModel.setSelectedPerwakilanCode(code)
+                    viewModel.setSelectedPerwakilan(id)
+                    viewModel.setPerwakilanEntity(majlis)
+                    viewModel.fetchCabang()
+                }
+            )
+            Box(modifier = Modifier.height(16.dp))
+            DropdownForm(
+                label = "pilih cabang".uppercase(),
+                placeholder = "--Pilih cabang--",
+                items = listMajisToString(dataCabang.value),
+                onChange = {index ->
+                    val id = getMajlisIdByIndex(index, dataCabang.value)
+                    viewModel.setSelectedCabang(id)
+                }
+            )
+            Box(modifier = Modifier.height(16.dp))
+        }
         TextForm(
             label = "nama event".uppercase(),
             placeholder = "ketik nama event",

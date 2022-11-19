@@ -11,6 +11,7 @@ import or.id.mta.presensi.warga.service.WargaService
 class WargaViewModel(
     val token: LiveData<String>,
     val event: LiveData<EventEntity>,
+    val officeId: LiveData<Int>,
     val wargaService: WargaService
     ):ViewModel() {
     private var _errorMessage = MutableLiveData("")
@@ -23,17 +24,31 @@ class WargaViewModel(
     val eventEntities: LiveData<List<UserPresence>> = _eventEntities
 
     fun fetchData(){
-        wargaService.getWarga(
-            token = token.value!!,
-            name = query.value!!,
-            officeId = event.value!!.cabang_id,
-            onSuccess = {userPresences ->
-                _eventEntities.postValue(userPresences)
-            },
-            onError = {message ->
-                _errorMessage.postValue(message)
-            }
-        )
+        if(officeId.value!! > 0){
+            wargaService.getWarga(
+                token = token.value!!,
+                name = query.value!!,
+                officeId = officeId.value!!,
+                onSuccess = {userPresences ->
+                    _eventEntities.postValue(userPresences)
+                },
+                onError = {message ->
+                    _errorMessage.postValue(message)
+                }
+            )
+        }else{
+            wargaService.getWarga(
+                token = token.value!!,
+                name = query.value!!,
+                officeId = event.value!!.cabang_id,
+                onSuccess = {userPresences ->
+                    _eventEntities.postValue(userPresences)
+                },
+                onError = {message ->
+                    _errorMessage.postValue(message)
+                }
+            )
+        }
     }
 
     fun setQueryAndSearch(query:String){

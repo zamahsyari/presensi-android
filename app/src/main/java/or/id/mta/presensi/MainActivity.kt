@@ -126,8 +126,9 @@ class MainActivity : ComponentActivity() {
             composable("/login"){
                 LoginScreen(
                     client = client,
-                    onLoggedIn = {token ->
+                    onLoggedIn = {token, officeId ->
                         apiToken.postValue(token)
+                        selectedOfficeId.postValue(officeId)
                         navController.navigate("/events")
                     }
                 )
@@ -136,6 +137,7 @@ class MainActivity : ComponentActivity() {
                 EventScreen(
                     client = client,
                     token = apiToken,
+                    officeId = selectedOfficeId,
                     onSelect = {eventId ->
                         selectedEventId.postValue(eventId)
 //                        navController.navigate("/scan")
@@ -152,6 +154,7 @@ class MainActivity : ComponentActivity() {
                 AddEventScreen(
                     client = client,
                     token = apiToken,
+                    officeId = selectedOfficeId,
                     onSuccess = { navController.popBackStack() },
                     onBackClick = {navController.popBackStack()}
                 )
@@ -162,6 +165,7 @@ class MainActivity : ComponentActivity() {
                     token = apiToken,
                     serialNumber = serialNumber,
                     memberId = selectedMemberId,
+                    officeId = selectedOfficeId,
                     event = selectedEvent,
                     onBackClick = {
                         navController.navigate("/events"){
@@ -188,6 +192,7 @@ class MainActivity : ComponentActivity() {
                     client = client,
                     token = apiToken,
                     event = selectedEvent,
+                    officeId = selectedOfficeId,
                     onSelect = {id ->
                         selectedMemberId.postValue(id)
                         navController.navigate("/scan")

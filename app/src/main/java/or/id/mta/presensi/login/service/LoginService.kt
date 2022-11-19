@@ -4,7 +4,7 @@ interface LoginService {
     fun login(
         username:String,
         password:String,
-        onSuccess: (token: String) -> Unit,
+        onSuccess: (token: String, officeId: Int) -> Unit,
         onError: (message: String) -> Unit
     )
 }
