@@ -139,26 +139,28 @@ class AddEventViewModel(token: LiveData<String>, addEventService: AddEventServic
     }
 
     fun fetchCabang(){
-        service.getCabang(
-            token = token.value!!,
-            perwakilanCode = selectedPerwakilanCode.value!!,
-            filterName = query.value,
-            onSuccess = {majlisEntities ->
-                var cabangs = mutableListOf<MajlisEntity>()
-                cabangs.add(perwakilanEntity.value!!)
-                cabangs.addAll(majlisEntities)
+        if(selectedPerwakilanCode.value != null){
+            service.getCabang(
+                token = token.value!!,
+                perwakilanCode = selectedPerwakilanCode.value!!,
+                filterName = query.value,
+                onSuccess = {majlisEntities ->
+                    var cabangs = mutableListOf<MajlisEntity>()
+                    cabangs.add(perwakilanEntity.value!!)
+                    cabangs.addAll(majlisEntities)
 
-                _cabangEntities.postValue(cabangs)
-                if(majlisEntities.size > 0){
-                    _selectedCabang.postValue(majlisEntities.get(0).id)
-                }else{
-                    _selectedCabang.postValue(selectedPerwakilan.value)
+                    _cabangEntities.postValue(cabangs)
+                    if(majlisEntities.size > 0){
+                        _selectedCabang.postValue(majlisEntities.get(0).id)
+                    }else{
+                        _selectedCabang.postValue(selectedPerwakilan.value)
+                    }
+                },
+                onError = {message ->
+                    _errorMessage.postValue(message)
                 }
-            },
-            onError = {message ->
-                _errorMessage.postValue(message)
-            }
-        )
+            )
+        }
     }
 
     fun isValidated(): Boolean{
