@@ -175,13 +175,13 @@ fun AddEventScreen(
                 modifier = Modifier.weight(0.3F)
             )
         }
-        Box(modifier = Modifier.height(16.dp))
-        DropdownForm(
-            label = "pilih interval waktu".uppercase(),
-            placeholder = "",
-            items = intervals,
-            onChange = {viewModel.setInterval(intervals.get(it))}
-        )
+//        Box(modifier = Modifier.height(16.dp))
+//        DropdownForm(
+//            label = "pilih interval waktu".uppercase(),
+//            placeholder = "",
+//            items = intervals,
+//            onChange = {viewModel.setInterval(intervals.get(it))}
+//        )
         Box(modifier = Modifier.height(16.dp))
         CheckForm(
             label = "set status aktif".uppercase(),

@@ -11,7 +11,7 @@ import java.io.IOException
 
 class DefaultScanApi(context: Context, client: OkHttpClient): ScanApi {
     val client = client
-    val url = context.getString(R.string.base_url)+ "/presences"
+    val url = context.getString(R.string.base_url)+ "/presences?1=1"
 
     override fun presence(
         token: String,
@@ -50,7 +50,7 @@ class DefaultScanApi(context: Context, client: OkHttpClient): ScanApi {
     ) {
         var finalUrl = url
         if(filter.eventId != null && filter.eventId != 0){
-            finalUrl += "?filter[]=event_id:${filter.eventId}"
+            finalUrl += "&filter[]=event_id:${filter.eventId}"
         }
         val request = Request.Builder()
             .url(finalUrl)
