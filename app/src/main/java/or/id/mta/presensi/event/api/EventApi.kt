@@ -6,6 +6,7 @@ interface EventApi {
     fun getAll(
         token: String,
         filter: EventApiFilter,
+        page: Int,
         onSuccess: (response: EventApiResponse) -> Unit,
         onError: (message: String) -> Unit
     )

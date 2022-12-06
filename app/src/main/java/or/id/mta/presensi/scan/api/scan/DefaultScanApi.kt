@@ -48,7 +48,7 @@ class DefaultScanApi(context: Context, client: OkHttpClient): ScanApi {
         onSuccess: (List<PresenceApiEntity>) -> Unit,
         onError: (message: String) -> Unit
     ) {
-        var finalUrl = url
+        var finalUrl = "${url}&per_page=1000"
         if(filter.eventId != null && filter.eventId != 0){
             finalUrl += "&filter[]=event_id:${filter.eventId}"
         }

@@ -15,6 +15,7 @@ class DefaultEventService(repository: EventApi):EventService {
         token:String,
         filterName:String?,
         filterOfficeId:Int?,
+        page: Int,
         onSuccess: (eventEntities: List<EventEntity>) -> Unit,
         onError: (message: String) -> Unit)
     {
@@ -22,6 +23,7 @@ class DefaultEventService(repository: EventApi):EventService {
         repo.getAll(
             token,
             filterApi,
+            page,
             {response ->
                 onSuccess(EventConverter.eventApiResponseToEventEntities(response))
             },

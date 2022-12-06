@@ -67,6 +67,9 @@ fun EventScreen(
                 coroutineScope.launch(Dispatchers.Main) {
                     onSelectEvent(selectedEvent)
                 }
+            },
+            onLastIndex = {
+                viewModel.fetchDataNext(officeId)
             }
         )
     }

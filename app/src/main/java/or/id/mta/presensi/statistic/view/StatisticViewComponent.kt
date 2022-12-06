@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -173,11 +174,18 @@ fun isEvenNumber(value:Int): Boolean{
 }
 
 @Composable
-fun StatisticListWarga(groupedListWarga: List<List<StatWarga>>){
+fun StatisticListWarga(groupedListWarga: List<List<StatWarga>>, onLastIndex: () -> Unit = {}){
+    val lastIndex = groupedListWarga.lastIndex
     LazyColumn(
         modifier = Modifier
-            .height(LocalConfiguration.current.screenHeightDp.dp - 162.dp)
+            .height(LocalConfiguration.current.screenHeightDp.dp - 162.dp),
+        userScrollEnabled = true
     ){
+        itemsIndexed(items = groupedListWarga){index, item ->
+            if(lastIndex == index){
+                onLastIndex()
+            }
+        }
         items(groupedListWarga){listWarga ->
             Box(modifier = Modifier.height(16.dp))
             Box(

@@ -1,8 +1,10 @@
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
@@ -87,7 +89,8 @@ fun SearchForm(value:String, placeholder: String, onChange: (String) -> Unit) {
 fun GenerateItems(
     eventEntities: List<EventEntity>,
     onClick: (Int) -> Unit,
-    onSelectEvent: (EventEntity) -> Unit
+    onSelectEvent: (EventEntity) -> Unit,
+    onLastIndex: () -> Unit
 ){
     val eventItemEntities = mutableListOf<EventItemEntity>()
     eventEntities.forEach {eventEntity ->
@@ -104,6 +107,9 @@ fun GenerateItems(
         onClick(it)
         val selectedEventEntity = selectEventEntity(eventEntities, it)
         onSelectEvent(selectedEventEntity)
+    }, onLastIndex = {
+        Log.d("called on last index", "OK")
+        onLastIndex()
     })
 }
 
@@ -112,9 +118,16 @@ private fun selectEventEntity(eventEntities: List<EventEntity>, id:Int):EventEnt
 }
 
 @Composable
-fun EventItems(entities: List<EventItemEntity>, onClick: (Int) -> Unit){
-    LazyColumn {
-        items(entities.size){index ->
+fun EventItems(entities: List<EventItemEntity>, onClick: (Int) -> Unit, onLastIndex: () -> Unit){
+    val lastIndex = entities.lastIndex
+    LazyColumn (
+        userScrollEnabled = true,
+        modifier = Modifier.fillMaxHeight(1f)
+            ) {
+        itemsIndexed(items = entities){index, item ->  
+            if(lastIndex == index){
+                onLastIndex()
+            }
             EventItem(item = entities.get(index), onClick = { onClick(it) })
         }
     }

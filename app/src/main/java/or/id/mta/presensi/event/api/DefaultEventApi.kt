@@ -11,21 +11,23 @@ import java.io.IOException
 
 class DefaultEventApi(context:Context, client: OkHttpClient): EventApi {
     val client = client
-    val url = context.getString(R.string.base_url) + "/events?1=1"
+    val url = context.getString(R.string.base_url) + "/events?sort=id:desc&per_page=10"
 
     override fun getAll(
         token: String,
         filter: EventApiFilter,
+        page: Int,
         onSuccess: (response: EventApiResponse) -> Unit,
         onError: (message: String) -> Unit
     ) {
-        var finalUrl = url
+        var finalUrl = "${url}&page=${page}"
         if(filter.name != null && filter.name != ""){
             finalUrl += "&filter[]=name:${filter.name}"
         }
         if(filter.officeId != null && filter.officeId != 0){
             finalUrl += "&filter[]=office_id:${filter.officeId}"
         }
+        Log.d("FINAL URL", finalUrl)
         val request = Request.Builder()
             .url(finalUrl)
             .header("Authorization", "Bearer $token")

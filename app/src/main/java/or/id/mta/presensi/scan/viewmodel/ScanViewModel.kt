@@ -75,6 +75,9 @@ class ScanViewModel(
     private var _otherPermission = MutableLiveData("")
     val otherPermission: LiveData<String> = _otherPermission
 
+    val mediaPlayerSuccess = MediaPlayer.create(context, R.raw.silakan_masuk)
+    val mediaPlayerFailed = MediaPlayer.create(context, R.raw.anda_belum_terdaftar)
+
     fun setOtherPermission(value:String){
         _otherPermission.value = value
     }
@@ -130,21 +133,19 @@ class ScanViewModel(
             memberId = memberId.value!!,
             onSuccess = {userPresence ->
                 Log.d("USER PRESENCE", userPresence.toString())
-                val mediaPlayer = MediaPlayer.create(context, R.raw.silakan_masuk)
-                mediaPlayer.start()
+                mediaPlayerSuccess.start()
                 _isLoading.postValue(false)
                 _isUserFound.postValue(true)
                 _userPresence.postValue(userPresence)
                 if(isAutoClosed){
-                    Timer().schedule(3000){
+                    Timer().schedule(500){
                         submit {}
                         _isUserFound.postValue(false)
                     }
                 }
             },
             onError = {errorMessage ->
-                val mediaPlayer = MediaPlayer.create(context, R.raw.anda_belum_terdaftar)
-                mediaPlayer.start()
+                mediaPlayerFailed.start()
                 _errorMessage.postValue(errorMessage)
                 _isLoading.postValue(false)
                 _isUserNotFound.postValue(true)
